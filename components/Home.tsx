@@ -23,17 +23,20 @@ export default function HomePage() {
     setIsLoading(true);
     try {
       setMessages([...messages, { role: "human", statement: input }]);
-      const { response, metadata } = await chat(input);
-      setMessages([
-        ...messages,
-        { role: "human", statement: input },
-        { role: "ai", statement: response },
-      ]);
+      const responseObj = await chat(input);
+      if (responseObj) {
+        const { response, metadata } = responseObj;
+        setMessages([
+          ...messages,
+          { role: "human", statement: input },
+          { role: "ai", statement: response },
+        ]);
       // console.log(metadata)
-      if (metadata.length > 0) {
+      if (metadata && metadata.length > 0) {
         setPage(metadata[0].loc.pageNumber);
       }
       setLoadingMessage("Got response from AI.");
+    }
     } catch (e) {
       console.log(e);
       setLoadingMessage("Error generating response.");

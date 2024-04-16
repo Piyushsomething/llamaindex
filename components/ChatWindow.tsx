@@ -81,26 +81,30 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       role: "human",
       statement: input
     };
-
     const newChatHistory = [...chatHistory, newMessage]; // Append the new message to the chat history
     setChatHistory(newChatHistory); // Update the chat history
-    setInput(""); // Clear the input field
+
     startChat(input); // Submit the message
+    setInput(""); // Clear the input field
   };
 
   // Function to handle microphone transcription
   const handleTranscription = (text: string) => {
+    setInput(text);
     const newMessage: ChatMessage = {
       role: "human",
-      statement: text
+      statement: input
     };
+    // const newChatHistory = [...chatHistory, newMessage]; // Append the new message to the chat history
+    // setChatHistory(newChatHistory); // Update the chat history
+    setChatHistory(prevChatHistory => [...prevChatHistory, newMessage]);
+    startChat(text)
+    setInput("");
+    // handleSend();
 
-    const newChatHistory = [...chatHistory, newMessage]; // Append the new message to the chat history
-    setChatHistory(newChatHistory); // Update the chat history
 
 
-    // setInput(text);
-    // startChat(text); // Submit the transcription
+    //startChat(text); // Submit the transcription
     // setInput("")
   };
 
